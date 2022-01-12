@@ -1,10 +1,14 @@
 import express from 'express';
+import apiRoutes from './routes/index';
+import { API_PATH } from './utils/constants';
 
 class Server {
     app: express.Application;
   
     constructor() {
         this.app = express();
+        this.app.set('port', 3001);
+        this.routes();
     }
   
     config() {
@@ -14,27 +18,14 @@ class Server {
   
     routes(){
         /* use api routes */
-        
+        this.app.use(API_PATH, apiRoutes);
     }
   
     start() {
       return this.app.listen(this.app.get('port'), () => {
-        console.log('ESTOY CORRIENDO ANDREA, VOS SI QUE SOS LIGERA!')
-        // after listen
-        // this.connectToMongo();
+        console.log('Task System is ready!')
       });
     }
-
-    // connectToMongo() {
-    //     //Creating the DB when the server starts.
-    //     try {
-    //         MongoConnection.connectToMongo();
-    //         console.log(`Tasks API listening at http://${environmentVariables.apiHost}:${environmentVariables.apiPort}`);
-    //     } catch (error) {
-    //         console.error(error);
-    //         throw new Error("Cannot connect with the database");
-    //     }
-    // }
 }
 
 const server = new Server();
